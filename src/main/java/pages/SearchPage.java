@@ -4,19 +4,29 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class SearchPage extends BasePage{
+import java.util.List;
+
+public class SearchPage extends BasePage {
+
+    @FindBy(xpath = "//section[@class='grid-text__container']")
+    private WebElement header;
+    @FindBy(xpath = "//article[@data-auto-id='productTile']")
+    private List<WebElement> amountOfProducts;
 
     public SearchPage(WebDriver driver) {
         super(driver);
     }
 
-    @FindBy(xpath = "//section[@class='grid-text__container']")
-    private WebElement header;
+    public String getTextHeader() {
+        return header.getText();
+    }
 
+    public List<WebElement> getSearchResultsList() {
+        return amountOfProducts;
+    }
 
-    public String getTextHeader(){
-       return header.getText();
+    public int getAmountOfProducts() {
+        return getSearchResultsList().size();
     }
 }
 
-//idfjghgfg

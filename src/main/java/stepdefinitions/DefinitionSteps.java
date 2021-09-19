@@ -64,29 +64,34 @@ public class DefinitionSteps {
         homePage.clickSearchButton();
     }
 
-    @Then("User checks that current url contains 'searchWord'")
-    public void checkThatCurrentUrlContainsSearchWord() {
-        assertTrue(driver.getCurrentUrl().contains(SEARCH_WORD));
+    @Then("User checks that current url contains {string}")
+    public void checkThatCurrentUrlContainsFilterWord(final String currUrl) {
+        assertTrue(driver.getCurrentUrl().contains(currUrl));
+
     }
 
     @And("User checks that current url contains keyword")
-    public void userChecksThatCurrentUrlContainsKeyword() {
+    public void checkThatCurrentUrlContainsKeyword() {
         assertTrue(driver.getCurrentUrl().contains(WRONG_SEARCH_WORD));
     }
 
     @Then("User checks lack of products with {string}")
-    public void userChecksLackOfProductsWithSearchHeader(final String searchHeader) {
+    public void checkLackOfProductsWithSearchHeader(final String searchHeader) {
 
         searchPage = pageFactoryManager.getSearchPage();
         assertTrue(searchPage.getTextHeader().contains(searchHeader));
     }
 
     @Then("User checks that amount of products in search page are {string}")
-    public void userChecksThatAmountOfProductsInSearchPageAreAmountOfElements() {
+    public void checkThatAmountOfProductsInSearchPageAreAmountOfElements(final String amountOfElements) {
+        searchPage = pageFactoryManager.getSearchPage();
+
+        assertEquals(Integer.parseInt(amountOfElements) , searchPage.getAmountOfProducts());
     }
 
     @And("User makes search by keyword ‘searchWord’")
-    public void userMakesSearchByKeywordSearchWord() {
+    public void makeSearchByKeyword() {
+        homePage.searchByKeyword(SEARCH_WORD);
     }
 
     @And("User checks filter’s field visibility")
@@ -99,10 +104,6 @@ public class DefinitionSteps {
 
     @And("User clicks {string} field")
     public void userClicksNewSeasonField() {
-    }
-
-    @Then("User checks that current url contains {string}")
-    public void userChecksThatCurrentUrlContainsFilterWord() {
     }
 
     @And("User clicks {string} button")

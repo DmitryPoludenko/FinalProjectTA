@@ -9,11 +9,11 @@ Feature: Smoke
     And User checks search field visibility
     When User makes search by keyword '<searchWord>'
     And User clicks search button
-    Then User checks that current url contains 'searchWord'
+    Then User checks that current url contains '<currentUrl>'
 
     Examples:
-      | homePage              | searchWord |
-      | https://www.asos.com/ | scirt      |
+      | homePage              | searchWord | currentUrl |
+      | https://www.asos.com/ | scirt      | scirt      |
 
   Scenario Outline: Check item missing on search page
     Given User opens '<homePage>' page
@@ -36,7 +36,7 @@ Feature: Smoke
 
     Examples:
       | homePage              | searchWord | amountOfElements |
-      | https://www.asos.com/ | Scirt      | 72               |
+      | https://www.asos.com/ | scirt      | 72               |
 
   Scenario Outline: Check correctly working filter
     Given User opens '<homePage>' page
