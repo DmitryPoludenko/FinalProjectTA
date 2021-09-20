@@ -40,15 +40,17 @@ public class HomePage extends BasePage {
         return accountField.isDisplayed();
     }
 
-    public void clickJoinButton(){
+    public void movesToAccountField(){
         Actions action = new Actions(driver);
-        action.moveToElement(accountField).pause(1000).moveToElement(joinButton).click().build().perform();
+        action.moveToElement(accountField).pause(1000).click().build().perform();
+    }
 
+    public void clickJoinButton(){
+            joinButton.click();
     }
 
     public void clickSignInButton(){
-        Actions action = new Actions(driver);
-        action.moveToElement(accountField).pause(1000).moveToElement(singInButton).click().build().perform();
+        singInButton.click();
     }
 
     public void clickWomenButton(){
@@ -62,6 +64,4 @@ public class HomePage extends BasePage {
     public void clickSearchButton(){
         searchButton.click();
     }
-
-
 }

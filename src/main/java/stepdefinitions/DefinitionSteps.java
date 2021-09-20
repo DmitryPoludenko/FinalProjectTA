@@ -17,7 +17,8 @@ public class DefinitionSteps {
 
     private static final long DEFAULT_TIMEOUT = 60;
     private static final String SEARCH_WORD = "scirt";
-    private static final String WRONG_SEARCH_WORD = "idfjghgfg";
+    private static final String WRONG_WORD = "idfjghgfg";
+
     WebDriver driver;
     HomePage homePage;
     AccountPage accountPage;
@@ -42,7 +43,6 @@ public class DefinitionSteps {
         homePage.openHomePage(url);
     }
 
-
     @And("User checks search field visibility")
     public void checkSearchFieldVisibility() {
         homePage.waitForPageLoadComplete(DEFAULT_TIMEOUT);
@@ -51,7 +51,7 @@ public class DefinitionSteps {
     }
 
     @When("User makes search by keyword {string}")
-    public void makeSearchByKeywordSearchWord(final String searchWord) {
+    public void makeSearchBySearchWord(final String searchWord) {
         homePage.searchByKeyword(searchWord);
     }
 
@@ -68,7 +68,7 @@ public class DefinitionSteps {
 
     @And("User checks that current url contains keyword")
     public void checkThatCurrentUrlContainsKeyword() {
-        assertTrue(driver.getCurrentUrl().contains(WRONG_SEARCH_WORD));
+        assertTrue(driver.getCurrentUrl().contains(WRONG_WORD));
     }
 
     @Then("User checks lack of products with {string}")
@@ -118,7 +118,7 @@ public class DefinitionSteps {
     }
 
     @And("User moves to 'sale' field")
-    public void userMovesToSaleField() {
+    public void moveToSaleField() {
         homePageWithNavigation.movesOnSaleField();
     }
 
@@ -127,102 +127,173 @@ public class DefinitionSteps {
         homePageWithNavigation.clickBestOfSaleButton();
     }
 
-    @Then("user checks that salePage header is {string}")
-    public void userChecksThatSalePageHeaderIsSaleHeader(final String saleHeader) {
+    @Then("User checks that salePage header is {string}")
+    public void clickThatSalePageHeaderIsSaleHeader(final String saleHeader) {
         bestOfSalePage = pageFactoryManager.getBestOfSalePage();
         assertTrue(bestOfSalePage.getSaleHeaderText().contains(saleHeader));
     }
 
     @And("User clicks wish list on first product")
-    public void userClicksWishListOnFirstProduct() {
+    public void clickWishListOnFirstProduct() {
         searchPage = pageFactoryManager.getSearchPage();
         searchPage.clickWishListButton();
     }
 
-    @Then("user checks that amount of products in wish list are {string}")
-    public void userChecksThatAmountOfProductsInWishListAreAmountOfProducts(final String amountOfWishLists) {
+    @Then("User checks that amount of products in wish list are {string}")
+    public void checkThatAmountOfProductsInWishListAreAmountOfProducts(final String amountOfWishLists) {
         assertEquals(Integer.parseInt(amountOfWishLists), searchPage.getAmountOfProductsInWishList());
     }
 
     @And("User clicks on first product")
-    public void userClicksOnFirstProduct() {
+    public void clickOnFirstProduct() {
         searchPage = pageFactoryManager.getSearchPage();
         searchPage.clickOnProduct();
     }
 
     @And("User checks 'ADD TO BAG' button visibility")
-    public void userChecksADDTOBAGButtonVisibility() {
+    public void checkAddToBagButtonVisibility() {
+        productPage = pageFactoryManager.getProductPage();
+        assertTrue(productPage.isAddToCartButtonVisible());
     }
 
     @And("User checks size field visibility")
-    public void userChecksSizeFieldVisibility() {
+    public void checkSizeFieldVisibility() {
+        assertTrue(productPage.isSizeFieldVisible());
     }
 
     @And("User clicks size field")
     public void userClicksSizeField() {
+        productPage.clickSizeField();
     }
 
     @And("User clicks on first size field")
-    public void userClicksOnFirstSizeField() {
+    public void clickOnFirstSizeField() {
+        productPage.clickOnFirstSize();
+
+        productPage.waitForAjaxToComplete(DEFAULT_TIMEOUT);
+        productPage.waitForPageLoadComplete(DEFAULT_TIMEOUT);
+        productPage.waitForAjaxToCompletePdp(DEFAULT_TIMEOUT);
+
     }
 
-    @And("User clicks {string} button on product")
-    public void userClicksADDTOBAGButtonOnProduct() {
+    @And("User clicks 'ADD TO BAG' button on product")
+    public void clickToBagButton() {
+        productPage.clickAddToCartButton();
+        productPage.waitForAjaxToComplete(DEFAULT_TIMEOUT);
+        productPage.waitForPageLoadComplete(DEFAULT_TIMEOUT);
+        productPage.waitForAjaxToCompletePdp(DEFAULT_TIMEOUT);
+
     }
 
-    @And("User moves to {string} button")
-    public void userMovesToMYBAGButton() {
+    @And("User moves to 'MY BAG' button")
+    public void moveToMyBagButton() {
+        productPage.movesToCartButton();
+    }
+
+    @And("User checks 'VIEW BAG' button visibility")
+    public void checkViewBagButtonVisibility() {
+        assertTrue(productPage.isViewBagButtonVisible());
+    }
+
+    @And("User checks 'CHECKOUT' button visibility")
+    public void checkCheckoutButtonVisibility() {
+        assertTrue(productPage.isCheckoutButtonVisible());
+    }
+
+    @And("User clicks 'VIEW BAG' button")
+    public void userClicksViewBagButton() {
+        productPage.clickViewBagButton();
     }
 
     @Then("User checks that cart page header is {string}")
-    public void userChecksThatCartPageHeaderIsCartHeader() {
+    public void checkThatCartPageHeaderIsCartHeader(final String cartHeader) {
+
+        addToCartPage = pageFactoryManager.getAddToCartPage();
+        addToCartPage.waitForPageLoadComplete(DEFAULT_TIMEOUT);
+        addToCartPage.waitForAjaxToComplete(DEFAULT_TIMEOUT);
+        addToCartPage.waitForAjaxToCompletePdp(DEFAULT_TIMEOUT);
+        assertTrue(addToCartPage.checkCartPage().contains(cartHeader));
     }
 
-    @Then("user checks the {string}")
-    public void userChecksTheMessage() {
+    @Then("User checks the {string}")
+    public void checkTheMessage(final String errorMessage) {
+        assertTrue(productPage.checkErrorMessageAddingCart().contains(errorMessage));
     }
 
-    @And("User checks account field visibility")
-    public void userChecksAccountFieldVisibility() {
+    @When("User checks account field visibility")
+    public void checkAccountFieldVisibility() {
+        assertTrue(homePage.isAccountFieldVisible());
     }
 
     @And("User moves to account field")
     public void userMovesToAccountField() {
+        homePage.movesToAccountField();
     }
 
-    @When("User clicks {string} field on account popup")
-    public void userClicksJoinFieldOnAccountPopup() {
+    @And("User clicks 'join' field on account popup")
+    public void clickJoinFieldOnAccountPopup() {
+        homePage.clickJoinButton();
     }
 
     @Then("User checks that the join page header contains {string}")
-    public void userChecksThatTheJoinPageHeaderContainsJoinHeader() {
+    public void checkThatTheJoinPageHeaderContainsJoinHeader(final String joinHeader) {
+        accountPage = pageFactoryManager.getAccountPage();
+        assertTrue(accountPage.checkThatJoinPageHeaderContainsWord().contains(joinHeader));
+    }
+
+    @And("User checks 'signUpViaGoogle' button visibility")
+    public void checkcheckSignUpViaGoogleButtonVisibility() {
+        assertTrue(accountPage.isSignUpViaGoogleVisible());
+    }
+
+    @And("User checks 'signUpViaApple' button visibility")
+    public void checkSignUpViaAppleButtonVisibility() {
+        assertTrue(accountPage.isSignUpViaAppleVisible());
+    }
+
+    @And("User checks 'signUpViaFacebook' button visibility")
+    public void checkSignUpViaFacebookButtonVisibility() {
+        assertTrue(accountPage.isSignUpViaFacebookVisible());
+    }
+
+    @And("User clicks 'sign in' field on account popup")
+    public void clickSignInFieldOnAccountPopup() {
+        homePage.clickSignInButton();
     }
 
     @And("Users checks email field visibility")
-    public void usersChecksEmailFieldVisibility() {
+    public void checkEmailFieldVisibility() {
+        accountPage = pageFactoryManager.getAccountPage();
+        assertTrue(accountPage.isEmailFieldVisible());
     }
 
-    @And("user checks password field visibility")
-    public void userChecksPasswordFieldVisibility() {
+    @And("User checks password field visibility")
+    public void checkPasswordFieldVisibility() {
+        assertTrue(accountPage.isPasswordFieldVisible());
     }
 
-    @And("user checks {string} button visibility")
-    public void userChecksSignInButtonVisibility() {
+    @And("User checks 'signIn' button visibility")
+    public void checkSignInButtonVisibility() {
+        assertTrue(accountPage.isSignInButtonVisible());
     }
 
-    @When("user types email address by keyword {string}")
-    public void userTypesEmailAddressByKeywordMailWord() {
+    @And("User types email address by keyword 'mailWord'")
+    public void typeEmailAddressByKeywordMailWord() {
+        accountPage.typeEmailFromKeyword(WRONG_WORD);
     }
 
-    @Then("user checks {string} visibility")
-    public void userChecksErrorMessageVisibility() {
+    @And("User clicks 'signIn' button")
+    public void clickSignInButton() {
+        accountPage.clickSignInButton();
     }
 
+    @Then("User checks {string} visibility")
+    public void checkErrorMessageVisibility(final String errorMessage) {
+        assertTrue(accountPage.checkErrorMessageInSignInPage().contains(errorMessage));
+    }
 
     @After
     public void tearDown() {
         driver.close();
     }
-
-
 }

@@ -13,7 +13,6 @@ private WebElement naviField;
 @FindBy(xpath = "(//a[contains(text(), 'Best of sale')])[1]")
 private WebElement bestOfSaleButton;
 
-
     public HomePageWithNavigation(WebDriver driver) {
         super(driver);
     }

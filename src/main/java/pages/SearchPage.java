@@ -75,4 +75,3 @@ public class SearchPage extends BasePage {
         product.click();
     }
 }
-
