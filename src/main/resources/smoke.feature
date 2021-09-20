@@ -43,21 +43,21 @@ Feature: Smoke
     And User checks search field visibility
     And User makes search by keyword ‘searchWord’
     And User clicks search button
-    And User checks filter’s field visibility
-    When User clicks '<SaleNewSeason>' filter button
-    And User clicks 'NewSeason' field
+    When User checks filter’s field visibility
+    And User clicks 'SaleNewSeason' filter field
+    And User clicks 'NewSeason' button
     Then User checks that current url contains '<filterWord>'
 
     Examples:
-      | homePage              | SaleNewSeason | filterWord |
-      | https://www.asos.com/ | New Season    | new_season |
+      | homePage              | filterWord |
+      | https://www.asos.com/ | new_season |
 
   Scenario Outline: Check correctly working floor navigation menu
     Given User opens '<homePage>' page
     And User clicks 'women' button
-    And User checks floor navigation menu visibility
-    When User moves to 'sale' field
-    When User clicks '<bestOfSale>' button
+    When User checks floor navigation menu visibility
+    And User moves to 'sale' field
+    And User clicks 'bestOfSale' button
     Then user checks that salePage header is '<saleHeader>'
 
     Examples:

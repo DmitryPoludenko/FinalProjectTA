@@ -3,16 +3,12 @@ package stepdefinitions;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import manager.PageFactoryManager;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import pages.*;
-
-import java.util.concurrent.TimeUnit;
 
 import static io.github.bonigarcia.wdm.WebDriverManager.chromedriver;
 import static org.junit.Assert.*;
@@ -86,7 +82,7 @@ public class DefinitionSteps {
     public void checkThatAmountOfProductsInSearchPageAreAmountOfElements(final String amountOfElements) {
         searchPage = pageFactoryManager.getSearchPage();
 
-        assertEquals(Integer.parseInt(amountOfElements) , searchPage.getAmountOfProducts());
+        assertEquals(Integer.parseInt(amountOfElements), searchPage.getAmountOfProducts());
     }
 
     @And("User makes search by keyword ‘searchWord’")
@@ -94,47 +90,67 @@ public class DefinitionSteps {
         homePage.searchByKeyword(SEARCH_WORD);
     }
 
-    @And("User checks filter’s field visibility")
-    public void userChecksFilterSFieldVisibility() {
+    @When("User checks filter’s field visibility")
+    public void checkFilterSFieldVisibility() {
+        searchPage = pageFactoryManager.getSearchPage();
+        assertTrue(searchPage.isFiltersFieldVisible());
     }
 
-    @When("User clicks {string} filter button")
-    public void userClicksSaleNewSeasonFilterButton() {
+    @And("User clicks 'SaleNewSeason' filter field")
+    public void clickSaleNewSeasonFilterField() {
+        searchPage.clickFilterFieldButton();
     }
 
-    @And("User clicks {string} field")
-    public void userClicksNewSeasonField() {
+    @And("User clicks 'NewSeason' button")
+    public void clickNewSeasonButton() {
+        searchPage.clickFilterButton();
     }
 
-    @And("User clicks {string} button")
-    public void userClicksWomenButton() {
+    @And("User clicks 'women' button")
+    public void clickWomenButton() {
+        homePage.clickWomenButton();
     }
 
-    @And("User checks floor navigation menu visibility")
-    public void userChecksFloorNavigationMenuVisibility() {
+    @When("User checks floor navigation menu visibility")
+    public void checkFloorNavigationMenuVisibility() {
+        homePageWithNavigation = pageFactoryManager.getHomePageWithNavigation();
+        assertTrue(homePageWithNavigation.isNavigationFieldVisible());
     }
 
-    @When("User moves to {string} field")
+    @And("User moves to 'sale' field")
     public void userMovesToSaleField() {
+        homePageWithNavigation.movesOnSaleField();
+    }
+
+    @And("User clicks 'bestOfSale' button")
+    public void userClicksBestOfSaleButton() {
+        homePageWithNavigation.clickBestOfSaleButton();
     }
 
     @Then("user checks that salePage header is {string}")
-    public void userChecksThatSalePageHeaderIsSaleHeader() {
+    public void userChecksThatSalePageHeaderIsSaleHeader(final String saleHeader) {
+        bestOfSalePage = pageFactoryManager.getBestOfSalePage();
+        assertTrue(bestOfSalePage.getSaleHeaderText().contains(saleHeader));
     }
 
     @And("User clicks wish list on first product")
     public void userClicksWishListOnFirstProduct() {
+        searchPage = pageFactoryManager.getSearchPage();
+        searchPage.clickWishListButton();
     }
 
     @Then("user checks that amount of products in wish list are {string}")
-    public void userChecksThatAmountOfProductsInWishListAreAmountOfProducts() {
+    public void userChecksThatAmountOfProductsInWishListAreAmountOfProducts(final String amountOfWishLists) {
+        assertEquals(Integer.parseInt(amountOfWishLists), searchPage.getAmountOfProductsInWishList());
     }
 
     @And("User clicks on first product")
     public void userClicksOnFirstProduct() {
+        searchPage = pageFactoryManager.getSearchPage();
+        searchPage.clickOnProduct();
     }
 
-    @And("User checks {string} button visibility")
+    @And("User checks 'ADD TO BAG' button visibility")
     public void userChecksADDTOBAGButtonVisibility() {
     }
 
@@ -201,7 +217,6 @@ public class DefinitionSteps {
     @Then("user checks {string} visibility")
     public void userChecksErrorMessageVisibility() {
     }
-
 
 
     @After
